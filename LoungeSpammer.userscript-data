@@ -7,7 +7,6 @@
 // @include     http://csgolounge.com/match?m=*
 // @include     http://dota2lounge.com/match?m=*
 // @version     0.1.0
-// @require     //ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js
 // @downloadURL http://cdn.mreq.eu/LoungeSpammer.user.js
 // @updateURL   http://cdn.mreq.eu/LoungeSpammer.user.js
 // @grant       none
