@@ -1,17 +1,3 @@
-# ==UserScript==
-# @name        LoungeSpammer
-# @namespace   LoungeSpammer
-# @author      mreq http://github.com/mreq
-# @include     http://csgolounge.com/mybets
-# @include     http://dota2lounge.com/mybets
-# @include     http://csgolounge.com/match
-# @include     http://dota2lounge.com/match
-# @version     0.0.1
-# @downloadURL http://cdn.mreq.eu/LoungeSpammer.user.js
-# @updateURL   http://cdn.mreq.eu/LoungeSpammer.user.js
-# @grant       none
-# ==/UserScript==
-
 class Spammer
 	constructor: ->
 		@createBox()
@@ -51,6 +37,10 @@ class ReturnsSpammer extends Spammer
 
 
 init = ->
+	url = window.location.href
+	if url.match 'mybets' isnt null
+		new ReturnsSpammer
+	else if url.match 'match' isnt null
+		new BetSpammer
 
-
-$ init
+$ -> init()

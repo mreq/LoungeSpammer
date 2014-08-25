@@ -1,0 +1,9 @@
+#!/bin/bash
+~/scripts/buildCoffee.sh LoungeSpammer.user.coffee
+# delete first line
+awk 'NR > 1' LoungeSpammer.user.js > temp
+# insert userscript definition
+cat LoungeSpammer.userscript-data temp > LoungeSpammer.user.js
+rm temp
+# push to cdn
+scp LoungeSpammer.user.js mreq:cdn
