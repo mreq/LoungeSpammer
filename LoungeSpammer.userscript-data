@@ -2,11 +2,9 @@
 // @name        LoungeSpammer
 // @namespace   LoungeSpammer
 // @author      mreq http://github.com/mreq
-// @include     http://csgolounge.com/mybets
-// @include     http://dota2lounge.com/mybets
-// @include     http://csgolounge.com/match?m=*
-// @include     http://dota2lounge.com/match?m=*
-// @version     0.1.0
+// @include     http://csgolounge.com/*
+// @include     http://dota2lounge.com/*
+// @version     0.2.2
 // @downloadURL http://cdn.mreq.eu/LoungeSpammer.user.js
 // @updateURL   http://cdn.mreq.eu/LoungeSpammer.user.js
 // @grant       none
