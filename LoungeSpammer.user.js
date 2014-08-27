@@ -4,7 +4,7 @@
 // @author      mreq http://github.com/mreq
 // @include     http://csgolounge.com/*
 // @include     http://dota2lounge.com/*
-// @version     0.2.2
+// @version     0.2.5
 // @downloadURL http://cdn.mreq.eu/LoungeSpammer.user.js
 // @updateURL   http://cdn.mreq.eu/LoungeSpammer.user.js
 // @grant       none
@@ -79,12 +79,19 @@ BotsChecker = (function(_super) {
         var old;
         old = _this.online;
         _this.online = data.match('BOTS ARE ONLINE') !== null;
-        if (old !== _this.online) {
-          _this.correctContent();
-        }
-        if (_this.autoChecking && _this.online) {
+        _this.offline = data.match('BOTS ARE ONLINE') !== null;
+        if (!(_this.online || _this.offline)) {
           clearInterval(_this.interval);
-          return _this.notify('Bots are now online!');
+          _this.content.text('UNKNOWN').css('color', 'yellow');
+          return _this.button.hide().after('<div style="width: 100%;">The <a href="/status" target="_blank" style="background: none; padding: 0; display: inline; float: none; text-decoration: none; border: 0;">Bots status</a> page is either disabled or doesn\'t load.</div>');
+        } else {
+          if (old !== _this.online) {
+            _this.correctContent();
+          }
+          if (_this.autoChecking && _this.online) {
+            clearInterval(_this.interval);
+            return _this.notify('Bots are now online!');
+          }
         }
       };
     })(this));
@@ -97,12 +104,12 @@ BotsChecker = (function(_super) {
       return function() {
         _this.i++;
         _this.check();
-        return _this.button.text("Bots still offline, checking every 30 seconds. Last checked at " + (Date().match(/\d+:\d+:\d+/)[0]) + ".");
+        return _this.button.text("Bots still offline, checking every 10 seconds. Last checked at " + (Date().match(/\d+:\d+:\d+/)[0]) + ".");
       };
-    })(this)), 30000);
+    })(this)), 10000);
     this.i++;
     this.check();
-    return this.button.css('color', '').text("Bots still offline, checking every 30 seconds. Last checked at " + (Date().match(/\d+:\d+:\d+/)[0]) + ".");
+    return this.button.css('color', '').text("Bots still offline, checking every 10 seconds. Last checked at " + (Date().match(/\d+:\d+:\d+/)[0]) + ".");
   };
 
   BotsChecker.prototype.bindButton = function() {
@@ -164,7 +171,7 @@ Spammer = (function(_super) {
       return function() {
         return _this.spamLounge();
       };
-    })(this)), 1500);
+    })(this)), 1000);
   };
 
   Spammer.prototype.addButton = function() {
@@ -199,21 +206,6 @@ BetSpammer = (function(_super) {
     return this.button.before(this.spamButton);
   };
 
-  BetSpammer.prototype.startSpamming = function() {
-    BetSpammer.__super__.startSpamming.apply(this, arguments);
-    return $(document).on('ajaxSuccess', (function(_this) {
-      return function(a, b, c) {
-        if (!c.data) {
-          if (c.url === 'ajax/postBet.php') {
-            return _this.notify('Placed bet.');
-          } else if (c.url === 'ajax/postBetOffer.php') {
-            return _this.notify('Got a place bet trade offer.');
-          }
-        }
-      };
-    })(this));
-  };
-
   return BetSpammer;
 
 })(Spammer);
@@ -234,15 +226,6 @@ ReturnsSpammer = (function(_super) {
 
   ReturnsSpammer.prototype.startSpamming = function() {
     ReturnsSpammer.__super__.startSpamming.apply(this, arguments);
-    $(document).on('ajaxSuccess', (function(_this) {
-      return function(a, b, c) {
-        if (!c.data) {
-          if (c.url === 'ajax/postToReturn.php') {
-            return _this.notify('Requested returns ready.');
-          }
-        }
-      };
-    })(this));
     return this.spamLounge();
   };
 

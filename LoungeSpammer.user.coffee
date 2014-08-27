@@ -38,22 +38,29 @@ class BotsChecker extends Base
 		$.get 'status', (data) =>
 			old = @online
 			@online = (data.match('BOTS ARE ONLINE') isnt null)
-			@correctContent()  unless old is @online
-			if @autoChecking and @online
+			@offline = (data.match('BOTS ARE ONLINE') isnt null)
+			unless @online or @offline
+				# page disabled/failed to load
 				clearInterval(@interval)
-				@notify 'Bots are now online!'
+				@content.text('UNKNOWN').css('color', 'yellow')
+				@button.hide().after('<div style="width: 100%;">The <a href="/status" target="_blank" style="background: none; padding: 0; display: inline; float: none; text-decoration: none; border: 0;">Bots status</a> page is either disabled or doesn\'t load.</div>')
+			else
+				@correctContent()  unless old is @online
+				if @autoChecking and @online
+					clearInterval(@interval)
+					@notify 'Bots are now online!'
 	autoCheck: ->
 		@autoChecking = true
 		@i = 0
 		@interval = setInterval (=>
 			@i++
 			@check()
-			@button.text "Bots still offline, checking every 30 seconds. Last checked at #{ Date().match(/\d+:\d+:\d+/)[0] }."
-		), 30000
+			@button.text "Bots still offline, checking every 10 seconds. Last checked at #{ Date().match(/\d+:\d+:\d+/)[0] }."
+		), 10000
 
 		@i++
 		@check()
-		@button.css('color', '').text "Bots still offline, checking every 30 seconds. Last checked at #{ Date().match(/\d+:\d+:\d+/)[0] }."
+		@button.css('color', '').text "Bots still offline, checking every 10 seconds. Last checked at #{ Date().match(/\d+:\d+:\d+/)[0] }."
 	bindButton: ->
 		@button.one 'click', =>
 			@initNotifications()
@@ -98,7 +105,7 @@ class Spammer extends Base
 	startSpamming: ->
 		@startTime = Date.now()
 		@spamLounge()
-		setInterval (=> @spamLounge()), 1500
+		setInterval (=> @spamLounge()), 1000
 	addButton: ->
 		@spamButton.one 'click', =>
 			@initNotifications()
@@ -115,14 +122,6 @@ class BetSpammer extends Spammer
 		@spamButton = $('<a class="buttonright" style="margin-left: 5px;" id="loungespammer-button">Spam place bet</a>')
 		super
 		@button.before @spamButton
-	startSpamming: ->
-		super
-		$(document).on 'ajaxSuccess', (a, b, c) =>
-			unless c.data
-				if c.url is 'ajax/postBet.php'
-					@notify 'Placed bet.'
-				else if c.url is 'ajax/postBetOffer.php'
-					@notify 'Got a place bet trade offer.'
 
 class ReturnsSpammer extends Spammer
 	constructor: ->
@@ -134,10 +133,6 @@ class ReturnsSpammer extends Spammer
 		@button.after @spamButton
 	startSpamming: ->
 		super
-		$(document).on 'ajaxSuccess', (a, b, c) =>
-			unless c.data
-				if c.url is 'ajax/postToReturn.php'
-					@notify 'Requested returns ready.'
 		@spamLounge()
 
 
