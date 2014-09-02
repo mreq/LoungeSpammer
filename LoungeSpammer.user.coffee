@@ -86,6 +86,7 @@ class Spammer extends Base
 			</section>
 		""")
 		$('#main > .box').first().after @box
+		@box.next('.box').css 'float', 'right'
 		@content = @box.find('#loungespammer')
 	overwriteAlert: ->
 		@i = 0
@@ -99,7 +100,7 @@ class Spammer extends Base
 				Tried #{ @i } times over the last #{ Math.floor((Date.now()-@startTime)/60000) } minute(s).<br><br>
 				Messages so far:<br>
 				<ul style="padding-left: 30px;">
-					<li style="padding-top: 5px;">#{ @messages.join('<li style="padding-top: 5px;"></li>') }</li>
+					<li style="padding-top: 5px;">#{ @messages.join('</li><li style="padding-top: 5px;">') }</li>
 				</ul>
 			"""
 	startSpamming: ->

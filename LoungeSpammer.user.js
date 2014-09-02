@@ -4,7 +4,7 @@
 // @author      mreq http://github.com/mreq
 // @include     http://csgolounge.com/*
 // @include     http://dota2lounge.com/*
-// @version     0.2.5
+// @version     0.2.7
 // @downloadURL http://cdn.mreq.eu/LoungeSpammer.user.js
 // @updateURL   http://cdn.mreq.eu/LoungeSpammer.user.js
 // @grant       none
@@ -146,6 +146,7 @@ Spammer = (function(_super) {
   Spammer.prototype.createBox = function() {
     this.box = $("<section class=\"box\" style=\"display: none;\">\n	<div class=\"title\">Status</div>\n		<article class=\"standard\" style=\"margin-top: 50px; margin-bottom: 0;\" id=\"loungespammer\"></article>\n		<article class=\"standard\" style=\"margin-top: 19px;\"><em>Does this script help you?</em> Be kind and say <a href=\"http://steamcommunity.com/tradeoffer/new/?partner=16222794&token=BOqXsQwB\" target=\"_blank\">thanks to the author</a> &lt;3.</article>\n</section>");
     $('#main > .box').first().after(this.box);
+    this.box.next('.box').css('float', 'right');
     return this.content = this.box.find('#loungespammer');
   };
 
@@ -159,7 +160,7 @@ Spammer = (function(_super) {
         if (_this.messages.indexOf(c) === -1) {
           _this.messages.push(c);
         }
-        return _this.content.html("<strong>" + c + "</strong><br><br>\nTried " + _this.i + " times over the last " + (Math.floor((Date.now() - _this.startTime) / 60000)) + " minute(s).<br><br>\nMessages so far:<br>\n<ul style=\"padding-left: 30px;\">\n	<li style=\"padding-top: 5px;\">" + (_this.messages.join('<li style="padding-top: 5px;"></li>')) + "</li>\n</ul>");
+        return _this.content.html("<strong>" + c + "</strong><br><br>\nTried " + _this.i + " times over the last " + (Math.floor((Date.now() - _this.startTime) / 60000)) + " minute(s).<br><br>\nMessages so far:<br>\n<ul style=\"padding-left: 30px;\">\n	<li style=\"padding-top: 5px;\">" + (_this.messages.join('</li><li style="padding-top: 5px;">')) + "</li>\n</ul>");
       };
     })(this);
   };
