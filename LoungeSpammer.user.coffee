@@ -85,7 +85,7 @@ class Spammer extends Base
 					<article class="standard" style="margin-top: 19px;"><em>Does this script help you?</em> Be kind and say <a href="http://steamcommunity.com/tradeoffer/new/?partner=16222794&token=BOqXsQwB" target="_blank">thanks to the author</a> &lt;3.</article>
 			</section>
 		""")
-		$('#main > .box').first().after @box
+		$('main > .box').first().after @box
 		@box.next('.box').css 'float', 'right'
 		@content = @box.find('#loungespammer')
 	overwriteAlert: ->
@@ -144,6 +144,6 @@ init = ->
 	else if url.match('match') isnt null
 		new BetSpammer
 
-	new BotsChecker
+	# new BotsChecker
 
 init()

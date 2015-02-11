@@ -4,7 +4,7 @@
 // @author      mreq http://github.com/mreq
 // @include     http://csgolounge.com/*
 // @include     http://dota2lounge.com/*
-// @version     0.2.7
+// @version     0.3.0
 // @downloadURL http://cdn.mreq.eu/LoungeSpammer.user.js
 // @updateURL   http://cdn.mreq.eu/LoungeSpammer.user.js
 // @grant       none
@@ -145,7 +145,7 @@ Spammer = (function(_super) {
 
   Spammer.prototype.createBox = function() {
     this.box = $("<section class=\"box\" style=\"display: none;\">\n	<div class=\"title\">Status</div>\n		<article class=\"standard\" style=\"margin-top: 50px; margin-bottom: 0;\" id=\"loungespammer\"></article>\n		<article class=\"standard\" style=\"margin-top: 19px;\"><em>Does this script help you?</em> Be kind and say <a href=\"http://steamcommunity.com/tradeoffer/new/?partner=16222794&token=BOqXsQwB\" target=\"_blank\">thanks to the author</a> &lt;3.</article>\n</section>");
-    $('#main > .box').first().after(this.box);
+    $('main > .box').first().after(this.box);
     this.box.next('.box').css('float', 'right');
     return this.content = this.box.find('#loungespammer');
   };
@@ -238,11 +238,10 @@ init = function() {
   var url;
   url = window.location.href;
   if (url.match('mybets') !== null) {
-    new ReturnsSpammer;
+    return new ReturnsSpammer;
   } else if (url.match('match') !== null) {
-    new BetSpammer;
+    return new BetSpammer;
   }
-  return new BotsChecker;
 };
 
 init();
